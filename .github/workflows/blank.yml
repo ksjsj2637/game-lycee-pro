@@ -1,0 +1,27 @@
+
+name: Compiler Lycée Pro Simulator
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer le compilateur
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi make
+
+      - name: Compiler le jeu
+        run: make build
+
+      - name: Recuperer le fichier NWA
+        uses: actions/upload-artifact@v4
+        with:
+          name: lycee-pro-simulator
+          path: output/*.nwa
